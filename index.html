@@ -123,7 +123,7 @@
         .dato-card {
             background: linear-gradient(135deg, var(--card-bg) 0%, rgba(255,255,255,0.95) 100%);
             border-radius: 20px;
-            padding: 35px;
+            padding: 32px;
             box-shadow: 0 10px 40px rgba(0,0,0,0.08), 0 2px 8px rgba(0,0,0,0.04);
             animation: fadeInUp 0.5s ease-out;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -155,8 +155,8 @@
 
         .dato-card h3 {
             color: var(--text-main);
-            margin: 0 0 30px 0;
-            font-size: 1.4rem;
+            margin: 0 0 27px 0;
+            font-size: 1.26rem;
             text-align: center;
             font-weight: 700;
             display: flex;
@@ -166,9 +166,9 @@
         }
 
         .chart-wrapper {
-            max-width: 320px;
+            max-width: 288px;
             margin: 0 auto;
-            padding: 20px;
+            padding: 18px;
             position: relative;
         }
 
@@ -183,7 +183,7 @@
 
         .tabla-conformidad th,
         .tabla-conformidad td {
-            padding: 25px 15px;
+            padding: 22px 13px;
             text-align: left;
             border-bottom: 1px solid var(--border);
         }
@@ -193,39 +193,39 @@
             color: var(--text-main);
             font-weight: 600;
             text-transform: uppercase;
-            font-size: 0.95rem;
+            font-size: 0.86rem;
             letter-spacing: 0.5px;
         }
 
         .tabla-conformidad td {
             color: var(--text-secondary);
-            font-size: 1.05rem;
+            font-size: 0.95rem;
         }
 
         .porcentaje {
             font-weight: 700;
-            font-size: 1.4rem;
+            font-size: 1.26rem;
             color: var(--primary);
         }
 
         .badge-conforme {
             display: inline-block;
-            padding: 4px 12px;
-            border-radius: 12px;
+            padding: 4px 11px;
+            border-radius: 11px;
             background: #e6f7ed;
             color: #0d7337;
             font-weight: 600;
-            font-size: 0.9rem;
+            font-size: 0.81rem;
         }
 
         .badge-disconforme {
             display: inline-block;
-            padding: 4px 12px;
-            border-radius: 12px;
+            padding: 4px 11px;
+            border-radius: 11px;
             background: #fff3e6;
             color: #d97706;
             font-weight: 600;
-            font-size: 0.9rem;
+            font-size: 0.81rem;
         }
 
         @media (max-width: 768px) {
@@ -479,9 +479,11 @@
         // Si no hay token en la URL, usar el token de desarrollo
         if (!token) {
             console.warn('⚠️ No se encontró token en URL, usando TOKEN_DESARROLLO');
+            console.log('🔑 Token utilizado (DESARROLLO):', TOKEN_DESARROLLO);
             return TOKEN_DESARROLLO;
         }
         
+        console.log('🔑 Token utilizado (URL):', token);
         return token;
     }
     
