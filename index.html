@@ -465,25 +465,19 @@
     
     // ========== EXTRACCIÓN DE TOKEN ==========
     
-    // 🔧 TOKEN HARDCODEADO PARA DESARROLLO (comentar o eliminar en producción)
-    const TOKEN_DESARROLLO = "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJvOXZIRXFWMUJ0UHNDNXRHYW5wN2NPYkNMQ0wyOHllZGRZdTFRTG5HUS1nIn0.eyJleHAiOjE3Njg5NDk3NzMsImlhdCI6MTc2ODkyMDk3MywiYXV0aF90aW1lIjoxNzY4OTIwOTcyLCJqdGkiOiI5N2I1MzI5MC0xMzVlLTQ1Y2QtYjlhNS00ZGFiY2QwNjdlNzgiLCJpc3MiOiJodHRwczovL2FkaXR1cy1hdXRoLmFkaXR1cy1kZW1vLmNvbS5hci9yZWFsbXMvYWRpdHVzIiwiYXVkIjoiYWNjb3VudCIsInN1YiI6ImI5ZGZhMGM0LWIzYTktNGFlYS05NGQzLTI4ZTNkMzVlYzc2ZiIsInR5cCI6IkJlYXJlciIsImF6cCI6ImFkaXR1cy1wbGF0Zm9ybS1jbGllbnQiLCJzaWQiOiIwNmNiY2MzNi0zOWJkLTRjMTktYjQxMC04MDJiZGMzOWY4M2QiLCJhY3IiOiIxIiwiYWxsb3dlZC1vcmlnaW5zIjpbIjUwLjMxLjEwMS4yMzUiLCJodHRwczovL2VjbS13ZWItYWRtaW4uYWRpdHVzLWRlbW8uY29tLmFyIiwiMTM4LjEyMi4xOTAuNTMiLCJodHRwczovL2FkaXR1cy1kZXNrdG9wLmFkaXR1cy1kZW1vLmNvbS5hciIsImh0dHBzOi8vYWRpdHVzLWZvcm1zLmFkaXR1cy1kZW1vLmNvbS5hciIsImh0dHBzOi8vYWRpdHVzLXN0b3JhZ2UuYWRpdHVzLWRlbW8uY29tLmFyIiwiaHR0cHM6Ly9lY20tYXBpLmFkaXR1cy1kZW1vLmNvbS5hciIsImh0dHBzOi8vZWNtLXdlYi1kZXNrdG9wLmFkaXR1cy1kZW1vLmNvbS5hciJdLCJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiOlsiZGVmYXVsdC1yb2xlcy1hZGl0dXMiLCJvZmZsaW5lX2FjY2VzcyIsInVtYV9hdXRob3JpemF0aW9uIl19LCJyZXNvdXJjZV9hY2Nlc3MiOnsiYWRpdHVzLXBsYXRmb3JtLWNsaWVudCI6eyJyb2xlcyI6WyJhZGl0dXMtc3RvcmFnZS11c2VyIiwiYWRpdHVzLWRlc2t0b3AtYWRtaW4iLCJhZGl0dXMtc3RvcmFnZS1hZG1pbiIsImFkaXR1cy1kZXNrdG9wLXVzZXIiLCJhZGl0dXMtZWRtLWFkbWluIiwiYWRpdHVzLWVkbS11c2VyIl19LCJhY2NvdW50Ijp7InJvbGVzIjpbIm1hbmFnZS1hY2NvdW50IiwibWFuYWdlLWFjY291bnQtbGlua3MiLCJ2aWV3LXByb2ZpbGUiXX19LCJzY29wZSI6Im9wZW5pZCBlbWFpbCBncm91cHMgcHJvZmlsZSIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwibmFtZSI6Ikx1Y2FzIENyZW8iLCJncm91cHMiOlsiL2FkaXR1cy1kZW1vLWFtZmF5cyIsIi9hZGl0dXMtc3BhY2VzLWNvbnRyYXRvcyIsIi9hZGl0dXMtc3BhY2VzLWRlbW8iLCIvYWRpdHVzLXNwYWNlcy1mYWN0dXJhcyIsIi9hZGl0dXMtc3BhY2VzLW1hbmFnZW1lbnQiLCIvYWRpdHVzLXN0b3JhZ2UtYWRtaW5zIiwiL2FkaXR1cy1zdG9yYWdlLXVzZXJzIiwiL2VkbS11c2Vycy9ib3JyYWRvIiwiL2VkbS1hZG1pbmlzdHJhdG9ycyIsIi9lZG0tdXNlcnMiLCIvZWRtLXVzZXJzL2xlY3R1cmEiLCIvZWRtLXVzZXJzL21vZGlmaWNhY2lvbiJdLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJsY3JlbyIsImdpdmVuX25hbWUiOiJMdWNhcyIsImxvY2FsZSI6ImVzIiwiZmFtaWx5X25hbWUiOiJDcmVvIiwiZW1haWwiOiJsY3Jlb0BncnVwb2xwYS5jb20ifQ.VEc4dijPmo1JI0j6EWDQgHf0iBzNHmXcnuSezD2MQ4CZH9RAlc9MmeJhiMKCQVtEopKMPfhIA5YakH7f3xe6gX7AU6xO_nMolrXVHHD4EvrfvZSlSw-Dx-ZAc1juG69QMHH7ZyFJoW26IPOwRp0IbYOvwZKbNwDME4LXTiS9a4zWGh5QrAEVgrcLgGFFvuy7XMXl8QXpvH7GSEuQcB8Mwal56E5RQHxcA8NLzTOTM0UTeEC4Lr1QmHVtvioBoULNzlhYkm5YrAWr0_ljDR-Zi-1ekXBKMWThzLzqM_eDrHb36HIDO5ZS9P1o2yn48gLAK6zmC5SU5_bWKWI8DrBrwg";
-    
     /**
      * Extrae el parámetro token de la URL
-     * Si no hay token en la URL, usa TOKEN_DESARROLLO (para pruebas)
      */
     function obtenerToken() {
         const params = new URLSearchParams(window.location.search);
         const token = params.get("token");
         
-        // Si no hay token en la URL, usar el token de desarrollo
         if (!token) {
-            console.warn('⚠️ No se encontró token en URL, usando TOKEN_DESARROLLO');
-            console.log('🔑 Token utilizado (DESARROLLO):', TOKEN_DESARROLLO);
-            return TOKEN_DESARROLLO;
+            console.error('❌ No se encontró token en la URL');
+            return null;
         }
         
-        console.log('🔑 Token utilizado (URL):', token);
+        console.log('🔑 Token obtenido de la URL');
         return token;
     }
     
