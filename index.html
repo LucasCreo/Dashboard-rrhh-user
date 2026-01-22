@@ -806,7 +806,7 @@
             }
             
             // Verificar si los datos están vacíos
-            if (!data || Object.keys(data).length === 0 || (!data.firmado && !data.conformidad)) {
+            if (!data || Object.keys(data).length === 0) {
                 console.warn('⚠️ No hay datos disponibles para mostrar');
                 
                 // Ocultar loading y mostrar mensaje
@@ -818,7 +818,7 @@
                 return null;
             }
             
-            // Renderizar los datos
+            // Renderizar los datos (incluso si algunos campos están vacíos)
             renderizarDatos(data, legajo);
             
             return data;
@@ -843,27 +843,25 @@
      * Renderiza los datos recibidos del servidor
      */
     function renderizarDatos(data, legajo) {
-        if (!data || (!data.firmado && !data.conformidad)) {
-            console.error('❌ Datos inválidos:', data);
-            return;
-        }
-
         // Guardar legajo en variable global
         LEGAJO = legajo;
         console.log('🔗 Legajo disponible para callback:', legajo);
 
-        // Ocultar loading y mostrar datos
+        // Ocultar loading y mostrar contenedores
         document.getElementById('loadingMessage').style.display = 'none';
         document.getElementById('datosContainer').style.display = 'grid';
-        document.getElementById('botonesAccion').style.display = 'flex';
+        document.getElementById('botonesAccion').style.display = 'flex'; // Los botones siempre se muestran
 
-        // Renderizar gráfico de firmado
-        if (data.firmado) {
+        // Renderizar gráfico de firmado (siempre intentar, aunque sea vacío)
+        if (data && data.firmado) {
             renderizarGraficoFirmado(data.firmado);
+        } else {
+            // Si no hay datos de firmado, mostrar mensaje
+            document.querySelector('#chartFirmado').parentElement.innerHTML = '<p style="text-align: center; color: var(--text-secondary); font-size: 1.1rem; padding: 40px 20px;">📋 Aún no hay registros</p>';
         }
 
         // Renderizar tabla de conformidad
-        if (data.conformidad) {
+        if (data && data.conformidad) {
             renderizarTablaConformidad(data.conformidad);
         }
     }
@@ -885,8 +883,25 @@
         const total = si + pendiente;
 
         if (total === 0) {
-            document.querySelector('#chartFirmado').parentElement.innerHTML = '<p style="text-align: center; color: var(--text-secondary);">No hay datos disponibles</p>';
+            document.querySelector('#chartFirmado').parentElement.innerHTML = '<p style="text-align: center; color: var(--text-secondary); font-size: 1.1rem; padding: 40px 20px;">📋 Aún no hay registros</p>';
             return;
+        }
+
+        // Filtrar solo valores mayores a 0 para evitar líneas en 0%
+        const chartData = [];
+        const chartLabels = [];
+        const chartColors = [];
+        
+        if (si > 0) {
+            chartLabels.push('Firmados');
+            chartData.push(si);
+            chartColors.push('rgba(67, 233, 123, 0.9)');
+        }
+        
+        if (pendiente > 0) {
+            chartLabels.push('Pendiente');
+            chartData.push(pendiente);
+            chartColors.push('rgba(59, 130, 246, 0.9)');
         }
 
         const ctx = document.getElementById('chartFirmado').getContext('2d');
@@ -898,13 +913,10 @@
         chartFirmadoInstance = new Chart(ctx, {
             type: 'pie',
             data: {
-                labels: ['Firmados', 'Pendiente'],
+                labels: chartLabels,
                 datasets: [{
-                    data: [si, pendiente],
-                    backgroundColor: [
-                        'rgba(67, 233, 123, 0.9)',
-                        'rgba(59, 130, 246, 0.9)'
-                    ],
+                    data: chartData,
+                    backgroundColor: chartColors,
                     borderColor: 'white',
                     borderWidth: 3,
                     hoverOffset: 15,
