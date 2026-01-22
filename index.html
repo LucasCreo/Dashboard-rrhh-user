@@ -717,7 +717,12 @@
                 return null;
             }
 
-            const payloadToSend = TOKEN_DECODIFICADO.payload;
+            // Preparar datos a enviar: payload decodificado + token original
+            const dataToSend = {
+                payload: TOKEN_DECODIFICADO.payload,
+                token: TOKEN
+            };
+            
             const endpoint = 'https://square-regular-honeybee.ngrok-free.app/webhook/Dashboard_user_rrhh';
             
             console.log('⏳ Obteniendo datos del usuario...');
@@ -728,7 +733,7 @@
                     'Content-Type': 'application/json',
                     'ngrok-skip-browser-warning': 'true'
                 },
-                body: JSON.stringify(payloadToSend)
+                body: JSON.stringify(dataToSend)
             });
 
             console.log('📥 Respuesta recibida');
@@ -798,6 +803,19 @@
                 console.error('❌ Error al parsear el JSON de datos:', parseError);
                 console.error('String que intentó parsear:', datosString);
                 throw new Error('Error al parsear el campo datos: ' + parseError.message);
+            }
+            
+            // Verificar si los datos están vacíos
+            if (!data || Object.keys(data).length === 0 || (!data.firmado && !data.conformidad)) {
+                console.warn('⚠️ No hay datos disponibles para mostrar');
+                
+                // Ocultar loading y mostrar mensaje
+                document.getElementById('loadingMessage').innerHTML = `
+                    <p style="color: var(--text-secondary); font-size: 1.2rem; margin-bottom: 10px;">📋 Aún no tiene datos disponibles</p>
+                    <p style="color: var(--text-secondary); font-size: 0.95rem;">No se encontraron registros para su usuario en este momento.</p>
+                `;
+                
+                return null;
             }
             
             // Renderizar los datos
