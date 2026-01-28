@@ -467,7 +467,7 @@
             Ir a Firmados
         </button>
         <button class="btn-accion btn-cargar" onclick="cargarDocumento()">
-            Cargar documento
+            Mis Documentos
         </button>
     </div>
 
@@ -1085,21 +1085,7 @@
 
     function cargarDocumento() {
         console.log('📄 Navegando a Cargar documento...');
-        const options = {
-            hide: ["legajo", "cuil", "nombre_y_apellido"],  
-            sort: ["object_title","tipo_de_documento", "descripcion"],
-            required: ["object_title","tipo_de_documento", "descripcion"],
-            choices: {
-                tipo_de_documento: [
-                    { value: "DNI", display: "DNI" },
-                    { value: "Certificado médico", display: "Certificado médico" },
-                    { value: "Certificado universitario", display: "Certificado universitario" },
-                    { value: "Vacaciones", display: "Vacaciones" }
-                ]
-            }
-        };
-        const objectDefinitionId = '414ebce5-9a05-4970-8d10-bb9e4b7a209f';
-        const callback = `/widgets/create/${objectDefinitionId}?options=${encodeURIComponent(JSON.stringify(options))}`; 
+        const callback = `/widgets/query?filter=%7B%22combinator%22%3A%22or%22%2C%22rules%22%3A%5B%7B%22id%22%3A%22000d7f60-8337-4e17-a9b3-9fc9c30a80f1%22%2C%22field%22%3A%22object_definition_id%22%2C%22operator%22%3A%22%3D%22%2C%22valueSource%22%3A%22value%22%2C%22value%22%3A%22d2dc9f86-67e2-46ff-82d3-e31a247ce799%22%7D%2C%7B%22id%22%3A%22f28e54a4-871b-4e51-978b-2b2eb7889380%22%2C%22field%22%3A%22object_definition_id%22%2C%22operator%22%3A%22%3D%22%2C%22valueSource%22%3A%22value%22%2C%22value%22%3A%224b3eedff-8145-4f70-8e41-384f6ce3fd7f%22%7D%2C%7B%22id%22%3A%22b424bf14-88a8-4214-8a0c-3a0c64341513%22%2C%22rules%22%3A%5B%7B%22id%22%3A%22d819e7b5-acdf-4da4-ad73-b21b45af00e1%22%2C%22field%22%3A%22legajo%22%2C%22operator%22%3A%22%3D%22%2C%22valueSource%22%3A%22value%22%2C%22value%22%3A%220001%22%7D%5D%2C%22combinator%22%3A%22and%22%2C%22not%22%3Afalse%7D%5D%7D&title=Documentos&sort=%5B%22updated_at+desc%22%2C%22version_label+desc%22%5D`; 
         const url = `https://ecm-web-desktop.aditus-demo.com.ar/loginWithToken?library=${encodeURIComponent(LIBRARY)}&token=${encodeURIComponent(TOKEN)}&callback=${encodeURIComponent(callback)}`;
         window.location.href = url;
     }
