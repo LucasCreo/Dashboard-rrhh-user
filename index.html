@@ -1164,7 +1164,7 @@
             ]
         };
         
-        const callback = `/widgets/query?filter=${encodeURIComponent(JSON.stringify(filter))}&title=${encodeURIComponent('Documentos')}&sort=${encodeURIComponent(JSON.stringify(['updated_at desc', 'version_label desc']))}&disableFilter=false&showAddButton=false`;
+        const callback = `/widgets/query?filter=${encodeURIComponent(JSON.stringify(filter))}&title=${encodeURIComponent('Documentos')}&sort=${encodeURIComponent(JSON.stringify(['updated_at desc', 'version_label desc']))}&disableFilter=true&showAddButton=false`;
         const url = `https://ecm-web-desktop.aditus-demo.com.ar/loginWithToken?library=${encodeURIComponent(LIBRARY)}&token=${encodeURIComponent(TOKEN)}&callback=${encodeURIComponent(callback)}`;
         window.location.href = url;
     }
@@ -1315,3 +1315,4 @@
 
 </body>
 </html>
+
