@@ -1086,9 +1086,9 @@
     function cargarDocumento() {
         console.log('📄 Navegando a Cargar documento...');
         const options = {
-            hide: ["object_definition_name", "object_definition_id"],  
-            sort: ["tipo_de_documento", "descripcion"],
-            required: ["tipo_de_documento", "descripcion"],
+            hide: ["object_definition_name", "object_definition_id", "legajo"],  
+            sort: ["object_title","tipo_de_documento", "descripcion"],
+            required: ["object_title","tipo_de_documento", "descripcion"],
             choices: {
                 tipo_de_documento: [
                     { value: "DNI", display: "DNI" },
