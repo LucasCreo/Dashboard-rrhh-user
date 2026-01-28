@@ -296,6 +296,24 @@
             background: linear-gradient(135deg, #9333ea 0%, #6b21a8 100%);
         }
 
+        .btn-subir {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            color: white;
+            padding: 18px 24px;
+            min-width: 60px;
+            font-size: 1.3rem;
+        }
+
+        .btn-subir:hover {
+            background: linear-gradient(135deg, #d97706 0%, #b45309 100%);
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
         /* Estilos para la información del token */
         .token-info-container {
             max-width: 1000px;
@@ -466,9 +484,14 @@
         <button class="btn-accion btn-firmados" onclick="irAFirmados()">
             Ir a Firmados
         </button>
-        <button class="btn-accion btn-cargar" onclick="cargarDocumento()">
-            Mis Documentos
-        </button>
+        <div class="btn-group">
+            <button class="btn-accion btn-cargar" onclick="misDocumentos()">
+                Mis Documentos
+            </button>
+            <button class="btn-accion btn-subir" onclick="subirDocumento()" title="Subir documento">
+                📤
+            </button>
+        </div>
     </div>
 
 </div>
@@ -1120,27 +1143,39 @@
         window.location.href = url;
     }
 
-    function cargarDocumento() {
-        console.log('📄 Navegando a Cargar documento...');
+    function misDocumentos() {
+        console.log('📄 Navegando a Mis Documentos...');
         
         // Construir filtro con LEGAJO dinámico
         const filter = {
-            combinator: "or",
+            combinator: "and",
             rules: [
-                {id: "000d7f60-8337-4e17-a9b3-9fc9c30a80f1", field: "object_definition_id", operator: "=", valueSource: "value", value: "d2dc9f86-67e2-46ff-82d3-e31a247ce799"},
-                {id: "f28e54a4-871b-4e51-978b-2b2eb7889380", field: "object_definition_id", operator: "=", valueSource: "value", value: "4b3eedff-8145-4f70-8e41-384f6ce3fd7f"},
-                {
-                    id: "b424bf14-88a8-4214-8a0c-3a0c64341513",
-                    rules: [
-                        {id: "d819e7b5-acdf-4da4-ad73-b21b45af00e1", field: "legajo", operator: "=", valueSource: "value", value: LEGAJO}
-                    ],
-                    combinator: "and",
-                    not: false
-                }
+                {id: "d819e7b5-acdf-4da4-ad73-b21b45af00e1", field: "legajo", operator: "=", valueSource: "value", value: LEGAJO}
             ]
         };
         
-        const callback = `/widgets/query?filter=${encodeURIComponent(JSON.stringify(filter))}&title=Documentos&sort=%5B%22updated_at+desc%22%2C%22version_label+desc%22%5D`;
+        const callback = `/widgets/query?filter=${encodeURIComponent(JSON.stringify(filter))}&title=${encodeURIComponent('Documentos')}&sort=${encodeURIComponent(JSON.stringify(['updated_at desc', 'version_label desc']))}&disableFilter=true&showAddButton=false`;
+        const url = `https://ecm-web-desktop.aditus-demo.com.ar/loginWithToken?library=${encodeURIComponent(LIBRARY)}&token=${encodeURIComponent(TOKEN)}&callback=${encodeURIComponent(callback)}`;
+        window.location.href = url;
+    }
+
+    function subirDocumento() {
+        console.log('📤 Navegando a Subir documento...');
+        const options = {
+            hide: ["legajo", "cuil", "nombre_y_apellido"],  
+            sort: ["object_title","tipo_de_documento", "descripcion"],
+            required: ["object_title","tipo_de_documento"],
+            choices: {
+                tipo_de_documento: [
+                    { value: "DNI", display: "DNI" },
+                    { value: "Certificado médico", display: "Certificado médico" },
+                    { value: "Certificado universitario", display: "Certificado universitario" },
+                    { value: "Vacaciones", display: "Vacaciones" }
+                ]
+            }
+        };
+        const objectDefinitionId = 'd2dc9f86-67e2-46ff-82d3-e31a247ce799';
+        const callback = `/widgets/create/${objectDefinitionId}?options=${encodeURIComponent(JSON.stringify(options))}`; 
         const url = `https://ecm-web-desktop.aditus-demo.com.ar/loginWithToken?library=${encodeURIComponent(LIBRARY)}&token=${encodeURIComponent(TOKEN)}&callback=${encodeURIComponent(callback)}`;
         window.location.href = url;
     }
