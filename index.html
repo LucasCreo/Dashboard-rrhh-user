@@ -477,20 +477,12 @@
     
     // ========== EXTRACCIÓN DE TOKEN ==========
     
-    // Token de desarrollo temporal (para testing)
-    const TOKEN_DESARROLLO = 'eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJvOXZIRXFWMUJ0UHNDNXRHYW5wN2NPYkNMQ0wyOHllZGRZdTFRTG5HUS1nIn0.eyJleHAiOjE3Njk1NjMxNzMsImlhdCI6MTc2OTUzNDM3MywianRpIjoiYWZkNGFjYWItY2RkMS00OGFkLThhODctYjk2NGNmZGJlZmE3IiwiaXNzIjoiaHR0cHM6Ly9hZGl0dXMtYXV0aC5hZGl0dXMtZGVtby5jb20uYXIvcmVhbG1zL2FkaXR1cyIsImF1ZCI6ImFjY291bnQiLCJzdWIiOiJiOWRmYTBjNC1iM2E5LTRhZWEtOTRkMy0yOGUzZDM1ZWM3NmYiLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiJhZGl0dXMtcGxhdGZvcm0tY2xpZW50Iiwic2lkIjoiN2JlYTAwY2EtNGYwNy00ZmUwLTg2OWYtYmEyZmY5N2MxMjkxIiwiYWNyIjoiMSIsImFsbG93ZWQtb3JpZ2lucyI6WyI1MC4zMS4xMDEuMjM1IiwiaHR0cHM6Ly9lY20td2ViLWFkbWluLmFkaXR1cy1kZW1vLmNvbS5hciIsIjEzOC4xMjIuMTkwLjUzIiwiaHR0cHM6Ly9hZGl0dXMtZGVza3RvcC5hZGl0dXMtZGVtby5jb20uYXIiLCJodHRwczovL2FkaXR1cy1mb3Jtcy5hZGl0dXMtZGVtby5jb20uYXIiLCJodHRwczovL2FkaXR1cy1zdG9yYWdlLmFkaXR1cy1kZW1vLmNvbS5hciIsImh0dHBzOi8vZWNtLWFwaS5hZGl0dXMtZGVtby5jb20uYXIiLCJodHRwczovL2VjbS13ZWItZGVza3RvcC5hZGl0dXMtZGVtby5jb20uYXIiXSwicmVhbG1fYWNjZXNzIjp7InJvbGVzIjpbImRlZmF1bHQtcm9sZXMtYWRpdHVzIiwib2ZmbGluZV9hY2Nlc3MiLCJ1bWFfYXV0aG9yaXphdGlvbiJdfSwicmVzb3VyY2VfYWNjZXNzIjp7ImFkaXR1cy1wbGF0Zm9ybS1jbGllbnQiOnsicm9sZXMiOlsiYWRpdHVzLXN0b3JhZ2UtdXNlciIsImFkaXR1cy1kZXNrdG9wLWFkbWluIiwiYWRpdHVzLXN0b3JhZ2UtYWRtaW4iLCJhZGl0dXMtZGVza3RvcC11c2VyIiwiYWRpdHVzLWVkbS1hZG1pbiIsImFkaXR1cy1lZG0tdXNlciJdfSwiYWNjb3VudCI6eyJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl19fSwic2NvcGUiOiJlbWFpbCBncm91cHMgcHJvZmlsZSIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwibmFtZSI6Ikx1Y2FzIENyZW8iLCJncm91cHMiOlsiL2FkaXR1cy1kZW1vLWFtZmF5cyIsIi9hZGl0dXMtc3BhY2VzLWNvbnRyYXRvcyIsIi9hZGl0dXMtc3BhY2VzLWRlbW8iLCIvYWRpdHVzLXNwYWNlcy1mYWN0dXJhcyIsIi9hZGl0dXMtc3BhY2VzLW1hbmFnZW1lbnQiLCIvYWRpdHVzLXN0b3JhZ2UtYWRtaW5zIiwiL2FkaXR1cy1zdG9yYWdlLXVzZXJzIiwiL2VkbS11c2Vycy9ib3JyYWRvIiwiL2VkbS1hZG1pbmlzdHJhdG9ycyIsIi9lZG0tdXNlcnMiLCIvZWRtLXVzZXJzL2xlY3R1cmEiLCIvZWRtLXVzZXJzL21vZGlmaWNhY2lvbiJdLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJsY3JlbyIsImdpdmVuX25hbWUiOiJMdWNhcyIsImxvY2FsZSI6ImVzIiwiZmFtaWx5X25hbWUiOiJDcmVvIiwiZW1haWwiOiJsY3Jlb0BncnVwb2xwYS5jb20ifQ.g4qyHMFUmVnP6p0ORmM0qvYTBNNgm889W9A_Qh_nNYF8pKeGCnLwRHwUaRqMc8LFXt_cnmA2XJVW65PrJQSU2DMSswcsVCzvydirshZNKDyiHuTA0Zelp8ZSq1aymlu2YgJNcLKUzxkKOHinUOu-aR3TJ4JTsY4urB-Or42rNQdxP6p3LYQAoIq0ZtOY_EIyqwFD3fnoH7ACUwoH0nDj_GXLSg65VAmKbhFC5JaADTrZtgJ2sZuUYB4DQkYCy7B_ov4LEWr5rErTcYQAe1pjrohLJMR8zo1DaSviBtFjxYGtv219noHxXGxA8NkmfT1O-n4kUeEhlg3OilSMm4-aEg';
-    
     /**
      * Extrae el parámetro token de la URL
      */
     function obtenerToken() {
         const params = new URLSearchParams(window.location.search);
         const token = params.get("token");
-        
-        if (!token) {
-            console.warn('⚠️ No se encontró token en la URL, usando token de desarrollo');
-            return TOKEN_DESARROLLO;
-        }
         
         console.log('🔑 Token obtenido de la URL');
         return token;
@@ -1093,8 +1085,22 @@
 
     function cargarDocumento() {
         console.log('📄 Navegando a Cargar documento...');
-        const callback = `/widgets/create/414ebce5-9a05-4970-8d10-bb9e4b7a209f`; 
-        const url = `https://ecm-web-desktop.aditus-demo.com.ar/loginWithToken?library=${encodeURIComponent(LIBRARY)}&token=${encodeURIComponent(TOKEN)}&callback=${callback}`;
+        const options = {
+            hide: ["object_definition_name", "object_definition_id"],  
+            sort: ["tipo_de_documento", "descripcion"],
+            required: ["tipo_de_documento", "descripcion"],
+            choices: {
+                tipo_de_documento: [
+                    { value: "DNI", display: "DNI" },
+                    { value: "Certificado médico", display: "Certificado médico" },
+                    { value: "Certificado universitario", display: "Certificado universitario" },
+                    { value: "Vacaciones", display: "Vacaciones" }
+                ]
+            }
+        };
+        const objectDefinitionId = '414ebce5-9a05-4970-8d10-bb9e4b7a209f';
+        const callback = `/widgets/create/${objectDefinitionId}?options=${encodeURIComponent(JSON.stringify(options))}`; 
+        const url = `https://ecm-web-desktop.aditus-demo.com.ar/loginWithToken?library=${encodeURIComponent(LIBRARY)}&token=${encodeURIComponent(TOKEN)}&callback=${encodeURIComponent(callback)}`;
         window.location.href = url;
     }
     // ========== FIN EXTRACCIÓN DE TOKEN ==========
