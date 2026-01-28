@@ -1098,7 +1098,7 @@
             ]
         };
         
-        const callback = `/widgets/query?filter=${encodeURIComponent(JSON.stringify(filter))}&title=B%C3%Pendientes+De+Firma&sort=%5B%22created_at+desc%22%5D&disableFilter=true&showAddButton=false`;
+        const callback = `/widgets/query?filter=${encodeURIComponent(JSON.stringify(filter))}&title=${encodeURIComponent('Pendientes de Firma')}&sort=${encodeURIComponent(JSON.stringify(['created_at desc']))}&disableFilter=true&showAddButton=false`;
         const url = `https://ecm-web-desktop.aditus-demo.com.ar/loginWithToken?library=${encodeURIComponent(LIBRARY)}&token=${encodeURIComponent(TOKEN)}&callback=${encodeURIComponent(callback)}`;
         window.location.href = url;
     }
@@ -1115,7 +1115,7 @@
             ]
         };
         
-        const callback = `/widgets/query?filter=${encodeURIComponent(JSON.stringify(filter))}&title=Recibos+Firmados&sort=%5B%22created_at+desc%22%5D&disableFilter=true&showAddButton=false`;
+        const callback = `/widgets/query?filter=${encodeURIComponent(JSON.stringify(filter))}&title=${encodeURIComponent('Recibos Firmados')}&sort=${encodeURIComponent(JSON.stringify(['created_at desc']))}&disableFilter=true&showAddButton=false`;
         const url = `https://ecm-web-desktop.aditus-demo.com.ar/loginWithToken?library=${encodeURIComponent(LIBRARY)}&token=${encodeURIComponent(TOKEN)}&callback=${encodeURIComponent(callback)}`;
         window.location.href = url;
     }
