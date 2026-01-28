@@ -1071,21 +1071,76 @@
      */
     function irAPendientes() {
         console.log('⏰ Navegando a Pendientes de Firma...');
-        const callback = `/widgets/query?filter=%7B%22combinator%22%3A%22and%22%2C%22rules%22%3A%5B%7B%22id%22%3A%22066fe4f6-ae63-4bad-ac31-b5eb007fe4b4%22%2C%22rules%22%3A%5B%7B%22id%22%3A%227d4607d4-111b-4956-b0a3-24466c952d33%22%2C%22field%22%3A%22firmado%22%2C%22operator%22%3A%22null%22%2C%22valueSource%22%3A%22value%22%2C%22value%22%3A%22%22%7D%2C%7B%22id%22%3A%22a1181c9b-569c-4180-a9d0-2c3b1d85efb1%22%2C%22field%22%3A%22firmado%22%2C%22operator%22%3A%22%3D%22%2C%22valueSource%22%3A%22value%22%2C%22value%22%3A%22No%22%7D%2C%7B%22id%22%3A%22cad87220-ff3b-47e6-8856-33612b51c47d%22%2C%22field%22%3A%22firmado%22%2C%22operator%22%3A%22%3D%22%2C%22valueSource%22%3A%22value%22%2C%22value%22%3A%22NO%22%7D%5D%2C%22combinator%22%3A%22or%22%2C%22not%22%3Afalse%7D%2C%7B%22id%22%3A%2280ae0ad8-ea5e-44c2-96ac-aaa38f80b944%22%2C%22rules%22%3A%5B%7B%22id%22%3A%22359e5aa4-9797-4a29-b594-486bbb88899d%22%2C%22field%22%3A%22object_definition_id%22%2C%22operator%22%3A%22%3D%22%2C%22valueSource%22%3A%22value%22%2C%22value%22%3A%226f5abc1c-24fe-4010-94fe-1771191ebc90%22%7D%2C%7B%22id%22%3A%22ae19010b-68f1-443c-9ead-1674381b4bd9%22%2C%22field%22%3A%22legajo%22%2C%22operator%22%3A%22%3D%22%2C%22valueSource%22%3A%22value%22%2C%22value%22%3A%220001%22%7D%5D%2C%22combinator%22%3A%22and%22%2C%22not%22%3Afalse%7D%5D%7D&title=B%C3%BAsqueda+avanzada&sort=%5B%22created_at+desc%22%5D&disableFilter=true&showAddButton=false`;
-        const url = `https://ecm-web-desktop.aditus-demo.com.ar/loginWithToken?library=${encodeURIComponent(LIBRARY)}&token=${encodeURIComponent(TOKEN)}&callback=${callback}`;
+        
+        // Construir filtro con LEGAJO dinámico
+        const filter = {
+            combinator: "and",
+            rules: [
+                {
+                    id: "066fe4f6-ae63-4bad-ac31-b5eb007fe4b4",
+                    rules: [
+                        {id: "7d4607d4-111b-4956-b0a3-24466c952d33", field: "firmado", operator: "null", valueSource: "value", value: ""},
+                        {id: "a1181c9b-569c-4180-a9d0-2c3b1d85efb1", field: "firmado", operator: "=", valueSource: "value", value: "No"},
+                        {id: "cad87220-ff3b-47e6-8856-33612b51c47d", field: "firmado", operator: "=", valueSource: "value", value: "NO"}
+                    ],
+                    combinator: "or",
+                    not: false
+                },
+                {
+                    id: "80ae0ad8-ea5e-44c2-96ac-aaa38f80b944",
+                    rules: [
+                        {id: "359e5aa4-9797-4a29-b594-486bbb88899d", field: "object_definition_id", operator: "=", valueSource: "value", value: "6f5abc1c-24fe-4010-94fe-1771191ebc90"},
+                        {id: "ae19010b-68f1-443c-9ead-1674381b4bd9", field: "legajo", operator: "=", valueSource: "value", value: LEGAJO}
+                    ],
+                    combinator: "and",
+                    not: false
+                }
+            ]
+        };
+        
+        const callback = `/widgets/query?filter=${encodeURIComponent(JSON.stringify(filter))}&title=B%C3%BAsqueda+avanzada&sort=%5B%22created_at+desc%22%5D&disableFilter=true&showAddButton=false`;
+        const url = `https://ecm-web-desktop.aditus-demo.com.ar/loginWithToken?library=${encodeURIComponent(LIBRARY)}&token=${encodeURIComponent(TOKEN)}&callback=${encodeURIComponent(callback)}`;
         window.location.href = url;
     }
 
     function irAFirmados() {
         console.log('✅ Navegando a Firmados...');
-        const callback = `/widgets/query?filter=%7B%22combinator%22%3A%22and%22%2C%22rules%22%3A%5B%7B%22id%22%3A%2238bca70a-fdb9-42bc-ae7e-c3e8cf344dd1%22%2C%22field%22%3A%22object_definition_id%22%2C%22operator%22%3A%22%3D%22%2C%22valueSource%22%3A%22value%22%2C%22value%22%3A%22c67cdebf-2665-408a-90d3-fd74ad528dc1%22%7D%2C%7B%22id%22%3A%2251506304-8895-4bab-9d03-1cc5544d283b%22%2C%22field%22%3A%22legajo%22%2C%22operator%22%3A%22%3D%22%2C%22valueSource%22%3A%22value%22%2C%22value%22%3A%220001%22%7D%5D%7D&title=B%C3%Recibos+Firmados&sort=%5B%22created_at+desc%22%5D&disableFilter=true&showAddButton=false`;
-        const url = `https://ecm-web-desktop.aditus-demo.com.ar/loginWithToken?library=${encodeURIComponent(LIBRARY)}&token=${encodeURIComponent(TOKEN)}&callback=${callback}`;
+        
+        // Construir filtro con LEGAJO dinámico
+        const filter = {
+            combinator: "and",
+            rules: [
+                {id: "38bca70a-fdb9-42bc-ae7e-c3e8cf344dd1", field: "object_definition_id", operator: "=", valueSource: "value", value: "c67cdebf-2665-408a-90d3-fd74ad528dc1"},
+                {id: "51506304-8895-4bab-9d03-1cc5544d283b", field: "legajo", operator: "=", valueSource: "value", value: LEGAJO}
+            ]
+        };
+        
+        const callback = `/widgets/query?filter=${encodeURIComponent(JSON.stringify(filter))}&title=B%C3%Recibos+Firmados&sort=%5B%22created_at+desc%22%5D&disableFilter=true&showAddButton=false`;
+        const url = `https://ecm-web-desktop.aditus-demo.com.ar/loginWithToken?library=${encodeURIComponent(LIBRARY)}&token=${encodeURIComponent(TOKEN)}&callback=${encodeURIComponent(callback)}`;
         window.location.href = url;
     }
 
     function cargarDocumento() {
         console.log('📄 Navegando a Cargar documento...');
-        const callback = `/widgets/query?filter=%7B%22combinator%22%3A%22or%22%2C%22rules%22%3A%5B%7B%22id%22%3A%22000d7f60-8337-4e17-a9b3-9fc9c30a80f1%22%2C%22field%22%3A%22object_definition_id%22%2C%22operator%22%3A%22%3D%22%2C%22valueSource%22%3A%22value%22%2C%22value%22%3A%22d2dc9f86-67e2-46ff-82d3-e31a247ce799%22%7D%2C%7B%22id%22%3A%22f28e54a4-871b-4e51-978b-2b2eb7889380%22%2C%22field%22%3A%22object_definition_id%22%2C%22operator%22%3A%22%3D%22%2C%22valueSource%22%3A%22value%22%2C%22value%22%3A%224b3eedff-8145-4f70-8e41-384f6ce3fd7f%22%7D%2C%7B%22id%22%3A%22b424bf14-88a8-4214-8a0c-3a0c64341513%22%2C%22rules%22%3A%5B%7B%22id%22%3A%22d819e7b5-acdf-4da4-ad73-b21b45af00e1%22%2C%22field%22%3A%22legajo%22%2C%22operator%22%3A%22%3D%22%2C%22valueSource%22%3A%22value%22%2C%22value%22%3A%220001%22%7D%5D%2C%22combinator%22%3A%22and%22%2C%22not%22%3Afalse%7D%5D%7D&title=Documentos&sort=%5B%22updated_at+desc%22%2C%22version_label+desc%22%5D`; 
+        
+        // Construir filtro con LEGAJO dinámico
+        const filter = {
+            combinator: "or",
+            rules: [
+                {id: "000d7f60-8337-4e17-a9b3-9fc9c30a80f1", field: "object_definition_id", operator: "=", valueSource: "value", value: "d2dc9f86-67e2-46ff-82d3-e31a247ce799"},
+                {id: "f28e54a4-871b-4e51-978b-2b2eb7889380", field: "object_definition_id", operator: "=", valueSource: "value", value: "4b3eedff-8145-4f70-8e41-384f6ce3fd7f"},
+                {
+                    id: "b424bf14-88a8-4214-8a0c-3a0c64341513",
+                    rules: [
+                        {id: "d819e7b5-acdf-4da4-ad73-b21b45af00e1", field: "legajo", operator: "=", valueSource: "value", value: LEGAJO}
+                    ],
+                    combinator: "and",
+                    not: false
+                }
+            ]
+        };
+        
+        const callback = `/widgets/query?filter=${encodeURIComponent(JSON.stringify(filter))}&title=Documentos&sort=%5B%22updated_at+desc%22%2C%22version_label+desc%22%5D`;
         const url = `https://ecm-web-desktop.aditus-demo.com.ar/loginWithToken?library=${encodeURIComponent(LIBRARY)}&token=${encodeURIComponent(TOKEN)}&callback=${encodeURIComponent(callback)}`;
         window.location.href = url;
     }
