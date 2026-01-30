@@ -110,6 +110,30 @@
             }
         }
 
+        @keyframes chartScale {
+            0% {
+                opacity: 0;
+                transform: scale(0.3) rotate(-10deg);
+            }
+            60% {
+                opacity: 1;
+                transform: scale(1.05) rotate(2deg);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) rotate(0deg);
+            }
+        }
+
+        @keyframes shimmer {
+            0% {
+                background-position: -200% center;
+            }
+            100% {
+                background-position: 200% center;
+            }
+        }
+
         /* Contenedor de datos */
         .datos-container {
             display: grid;
@@ -170,10 +194,20 @@
             margin: 0 auto;
             padding: 18px;
             position: relative;
+            opacity: 0;
+        }
+
+        .chart-wrapper.loaded {
+            animation: chartScale 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
         }
 
         .chart-wrapper canvas {
             filter: drop-shadow(0 4px 12px rgba(0,0,0,0.1));
+            transition: transform 0.3s ease;
+        }
+
+        .chart-wrapper:hover canvas {
+            transform: scale(1.03);
         }
 
         .tabla-conformidad {
@@ -510,12 +544,20 @@
     
     // ========== EXTRACCIÓN DE TOKEN ==========
     
+    // Token de desarrollo temporal (para testing)
+    const TOKEN_DESARROLLO = 'eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJvOXZIRXFWMUJ0UHNDNXRHYW5wN2NPYkNMQ0wyOHllZGRZdTFRTG5HUS1nIn0.eyJleHAiOjE3Njk2NTkyNDEsImlhdCI6MTc2OTYzMDQ0MSwianRpIjoiN2U4N2QyOTctZDUxZC00ZWQzLWJjZTAtMTc2MWFhNmIwZWI4IiwiaXNzIjoiaHR0cHM6Ly9hZGl0dXMtYXV0aC5hZGl0dXMtZGVtby5jb20uYXIvcmVhbG1zL2FkaXR1cyIsImF1ZCI6ImFjY291bnQiLCJzdWIiOiJiOWRmYTBjNC1iM2E5LTRhZWEtOTRkMy0yOGUzZDM1ZWM3NmYiLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiJhZGl0dXMtcGxhdGZvcm0tY2xpZW50Iiwic2lkIjoiMjAyYmFhZjctYzM5ZC00NGRkLTk3OTgtY2YyMWFjY2E1ODI1IiwiYWNyIjoiMSIsImFsbG93ZWQtb3JpZ2lucyI6WyI1MC4zMS4xMDEuMjM1IiwiaHR0cHM6Ly9lY20td2ViLWFkbWluLmFkaXR1cy1kZW1vLmNvbS5hciIsIjEzOC4xMjIuMTkwLjUzIiwiaHR0cHM6Ly9hZGl0dXMtZGVza3RvcC5hZGl0dXMtZGVtby5jb20uYXIiLCJodHRwczovL2FkaXR1cy1mb3Jtcy5hZGl0dXMtZGVtby5jb20uYXIiLCJodHRwczovL2FkaXR1cy1zdG9yYWdlLmFkaXR1cy1kZW1vLmNvbS5hciIsImh0dHBzOi8vZWNtLWFwaS5hZGl0dXMtZGVtby5jb20uYXIiLCJodHRwczovL2VjbS13ZWItZGVza3RvcC5hZGl0dXMtZGVtby5jb20uYXIiXSwicmVhbG1fYWNjZXNzIjp7InJvbGVzIjpbImRlZmF1bHQtcm9sZXMtYWRpdHVzIiwib2ZmbGluZV9hY2Nlc3MiLCJ1bWFfYXV0aG9yaXphdGlvbiJdfSwicmVzb3VyY2VfYWNjZXNzIjp7ImFkaXR1cy1wbGF0Zm9ybS1jbGllbnQiOnsicm9sZXMiOlsiYWRpdHVzLXN0b3JhZ2UtdXNlciIsImFkaXR1cy1kZXNrdG9wLWFkbWluIiwiYWRpdHVzLXN0b3JhZ2UtYWRtaW4iLCJhZGl0dXMtZGVza3RvcC11c2VyIiwiYWRpdHVzLWVkbS1hZG1pbiIsImFkaXR1cy1lZG0tdXNlciJdfSwiYWNjb3VudCI6eyJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl19fSwic2NvcGUiOiJlbWFpbCBncm91cHMgcHJvZmlsZSIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwibmFtZSI6Ikx1Y2FzIENyZW8iLCJncm91cHMiOlsiL2FkaXR1cy1kZW1vLWFtZmF5cyIsIi9hZGl0dXMtc3BhY2VzLWNvbnRyYXRvcyIsIi9hZGl0dXMtc3BhY2VzLWRlbW8iLCIvYWRpdHVzLXNwYWNlcy1mYWN0dXJhcyIsIi9hZGl0dXMtc3BhY2VzLW1hbmFnZW1lbnQiLCIvYWRpdHVzLXN0b3JhZ2UtYWRtaW5zIiwiL2FkaXR1cy1zdG9yYWdlLXVzZXJzIiwiL2VkbS11c2Vycy9ib3JyYWRvIiwiL2VkbS1hZG1pbmlzdHJhdG9ycyIsIi9lZG0tdXNlcnMiLCIvZWRtLXVzZXJzL2xlY3R1cmEiLCIvZWRtLXVzZXJzL21vZGlmaWNhY2lvbiJdLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJsY3JlbyIsImdpdmVuX25hbWUiOiJMdWNhcyIsImxvY2FsZSI6ImVzIiwiZmFtaWx5X25hbWUiOiJDcmVvIiwiZW1haWwiOiJsY3Jlb0BncnVwb2xwYS5jb20ifQ.KtLI33H8D3-5QTcWMpOUrSj_46CGLPUGwzYVJlks0j1Pd9psvXLJynup9Ft0Kpjq_JJ0zrWAo0Vw7SDvLgsS2nbFcy76nH3GvDGiOWTm3QAiVnQiJaQsF3btop9d1Y6CfEr9XRqDyHEpuumwBWGDMba6VSM4u5N9sgqlakD2J-KGLsqMp2Ea8J_0L44jW7QOJS7NKRlgFcvp0rwbzo6ivk1WT1ti6nktETcWncLzeDTkg_W0tUmSxveUBTz0AzYoP7L2t8qdtqIZxHxu0oJ4Zt0retXjIlhD8bT3H5R5Zn4qVB-wNvWnXZA6YMhemoIdzCpEwQ4Trz-uCpk37GDK7w';
+    
     /**
      * Extrae el parámetro token de la URL
      */
     function obtenerToken() {
         const params = new URLSearchParams(window.location.search);
         const token = params.get("token");
+        
+        if (!token) {
+            console.warn('⚠️ No se encontró token en la URL, usando token de desarrollo');
+            return TOKEN_DESARROLLO;
+        }
         
         console.log('🔑 Token obtenido de la URL');
         return token;
@@ -973,6 +1015,14 @@
         }
 
         const ctx = document.getElementById('chartFirmado').getContext('2d');
+        const wrapper = ctx.canvas.closest('.chart-wrapper');
+        
+        // Remover clase loaded para reiniciar animación
+        if (wrapper) {
+            wrapper.classList.remove('loaded');
+            // Forzar reflow para reiniciar animación
+            void wrapper.offsetWidth;
+        }
         
         if (chartFirmadoInstance) {
             chartFirmadoInstance.destroy();
@@ -1050,8 +1100,16 @@
                 animation: {
                     animateRotate: true,
                     animateScale: true,
-                    duration: 1200,
-                    easing: 'easeInOutQuart'
+                    duration: 1500,
+                    easing: 'easeOutElastic',
+                    delay: (context) => {
+                        return context.dataIndex * 100;
+                    },
+                    onComplete: function() {
+                        // Añadir clase loaded al wrapper para trigger la animación del contenedor
+                        const wrapper = document.querySelector('#chartFirmado').closest('.chart-wrapper');
+                        if (wrapper) wrapper.classList.add('loaded');
+                    }
                 }
             },
             plugins: [ChartDataLabels]
@@ -1084,12 +1142,12 @@
 
         const tbody = document.getElementById('tablaConformidadBody');
         tbody.innerHTML = `
-            <tr>
+            <tr style="animation: fadeInUp 0.5s ease-out 0.1s both;">
                 <td><span class="badge-conforme">Conforme</span></td>
                 <td>${conforme}</td>
                 <td><span class="porcentaje">${porcentajeConforme}%</span></td>
             </tr>
-            <tr>
+            <tr style="animation: fadeInUp 0.5s ease-out 0.3s both;">
                 <td><span class="badge-disconforme">Disconforme</span></td>
                 <td>${disconforme}</td>
                 <td><span class="porcentaje">${porcentajeDisconforme}%</span></td>
@@ -1315,4 +1373,3 @@
 
 </body>
 </html>
-
