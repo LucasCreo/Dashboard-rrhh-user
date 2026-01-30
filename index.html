@@ -110,30 +110,6 @@
             }
         }
 
-        @keyframes chartScale {
-            0% {
-                opacity: 0;
-                transform: scale(0.3) rotate(-10deg);
-            }
-            60% {
-                opacity: 1;
-                transform: scale(1.05) rotate(2deg);
-            }
-            100% {
-                opacity: 1;
-                transform: scale(1) rotate(0deg);
-            }
-        }
-
-        @keyframes shimmer {
-            0% {
-                background-position: -200% center;
-            }
-            100% {
-                background-position: 200% center;
-            }
-        }
-
         /* Contenedor de datos */
         .datos-container {
             display: grid;
@@ -194,20 +170,10 @@
             margin: 0 auto;
             padding: 18px;
             position: relative;
-            opacity: 0;
-        }
-
-        .chart-wrapper.loaded {
-            animation: chartScale 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
         }
 
         .chart-wrapper canvas {
             filter: drop-shadow(0 4px 12px rgba(0,0,0,0.1));
-            transition: transform 0.3s ease;
-        }
-
-        .chart-wrapper:hover canvas {
-            transform: scale(1.03);
         }
 
         .tabla-conformidad {
@@ -1015,14 +981,6 @@
         }
 
         const ctx = document.getElementById('chartFirmado').getContext('2d');
-        const wrapper = ctx.canvas.closest('.chart-wrapper');
-        
-        // Remover clase loaded para reiniciar animación
-        if (wrapper) {
-            wrapper.classList.remove('loaded');
-            // Forzar reflow para reiniciar animación
-            void wrapper.offsetWidth;
-        }
         
         if (chartFirmadoInstance) {
             chartFirmadoInstance.destroy();
@@ -1100,16 +1058,8 @@
                 animation: {
                     animateRotate: true,
                     animateScale: true,
-                    duration: 1500,
-                    easing: 'easeOutElastic',
-                    delay: (context) => {
-                        return context.dataIndex * 100;
-                    },
-                    onComplete: function() {
-                        // Añadir clase loaded al wrapper para trigger la animación del contenedor
-                        const wrapper = document.querySelector('#chartFirmado').closest('.chart-wrapper');
-                        if (wrapper) wrapper.classList.add('loaded');
-                    }
+                    duration: 1200,
+                    easing: 'easeInOutQuart'
                 }
             },
             plugins: [ChartDataLabels]
@@ -1142,12 +1092,12 @@
 
         const tbody = document.getElementById('tablaConformidadBody');
         tbody.innerHTML = `
-            <tr style="animation: fadeInUp 0.5s ease-out 0.1s both;">
+            <tr>
                 <td><span class="badge-conforme">Conforme</span></td>
                 <td>${conforme}</td>
                 <td><span class="porcentaje">${porcentajeConforme}%</span></td>
             </tr>
-            <tr style="animation: fadeInUp 0.5s ease-out 0.3s both;">
+            <tr>
                 <td><span class="badge-disconforme">Disconforme</span></td>
                 <td>${disconforme}</td>
                 <td><span class="porcentaje">${porcentajeDisconforme}%</span></td>
